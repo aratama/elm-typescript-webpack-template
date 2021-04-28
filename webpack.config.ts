@@ -1,9 +1,9 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const webpack = require("webpack");
+import * as path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import * as webpack from "webpack";
 
-module.exports = {
+export const config = {
   mode: process.env.NODE_ENV,
   entry: "./src/index.ts",
   output: {
@@ -42,21 +42,14 @@ module.exports = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
-      // Sassファイルの読み込みとコンパイル
       {
-        test: /\.scss/, // 対象となるファイルの拡張子
+        test: /\.scss/,
         use: [
-          // linkタグに出力する機能
           "style-loader",
-          // CSSをバンドルするための機能
           {
             loader: "css-loader",
             options: {
-              // オプションでCSS内のurl()メソッドの取り込みを禁止する
               url: false,
-              // 0 => no loaders (default);
-              // 1 => postcss-loader;
-              // 2 => postcss-loader, sass-loader
               importLoaders: 2,
             },
           },
@@ -69,7 +62,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: [".tsx", ".ts", ".js", ".elm"],
+    extensions: [".tsx", ".ts", ".js", ".elm", ".scss"],
   },
 
   devServer: {
@@ -78,3 +71,5 @@ module.exports = {
     historyApiFallback: true, // for spa
   },
 };
+
+export default config;
