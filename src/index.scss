@@ -1,0 +1,38 @@
+.outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0d9e6f;
+  height: 100vh;
+  width: 100vw;
+
+  .inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    @media (orientation: portrait) {
+      flex-direction: column;
+    }
+
+    .count {
+      font-size: 2rem;
+      min-width: 4rem;
+      text-align: center;
+    }
+  }
+}
+
+.upDownButton {
+  background-color: #dddddd;
+  padding: 10px;
+  border-radius: 3px;
+  min-width: 160px;
+  outline: none;
+  border-style: none;
+  font-size: 2rem;
+
+  &:hover {
+    background-color: white;
+  }
+}
