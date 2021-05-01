@@ -25,5 +25,4 @@ An opinionated Elm project template with webpack.
 
 - elm-typescript-interop (unfortunately not maintained)
 - parcel@next (pre-alpha status)
-- tailwindcss (replaced by elm-css)
-- scss (replaced by elm-css)
+- tailwindcss
