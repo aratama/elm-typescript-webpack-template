@@ -1,4 +1,4 @@
-import { Elm } from "./Main";
+import { Elm, User } from "./Main";
 
 import "./index.scss";
 
@@ -8,41 +8,60 @@ declare const MODE: string;
 
 console.log(`MODE=${MODE}`);
 
-// TODO: replace with a callback function like `onAuthStateChanged` of firebase
-setTimeout(() => {
-  const user = localStorage.getItem("user");
+const main = async () => {
+  onAuthStateChanged((user: User | null) => {
+    const node = document.getElementById("main");
 
-  const node = document.getElementById("main");
+    if (!node) {
+      throw new Error("#main not found");
+    }
 
-  if (!node) {
-    throw new Error("#main not found");
-  }
+    const elm = Elm.Main.init({ node, flags: { user } });
 
-  const elm = Elm.Main.init({ node, flags: { user: user ? JSON.parse(user) : null } });
+    elm.ports.requestItem.subscribe((key: string) => {
+      elm.ports.receiveItem.send({ key, value: localStorage.getItem(key) });
+    });
 
-  elm.ports.requestItem.subscribe((key: string) => {
-    const value = localStorage.getItem(key);
-    elm.ports.receiveItem.send({ key, value });
-  });
+    elm.ports.setItem.subscribe(({ key, value }) => {
+      localStorage.setItem(key, value);
+    });
 
-  elm.ports.setItem.subscribe(({ key, value }) => {
-    localStorage.setItem(key, value);
-  });
-
-  elm.ports.signIn.subscribe(({ email, password }) => {
-    // TODO: replace with a function like `signInEmailAndPassword` of firebase
-    setTimeout(() => {
-      const user = { email, displayName: email, emailVerified: true };
-      localStorage.setItem("user", JSON.stringify(user));
+    elm.ports.signIn.subscribe(async ({ email, password }) => {
+      const user = await signInEmailAndPassword(email, password);
       elm.ports.authStateChanged.send(user);
-    }, 1000);
-  });
+    });
 
-  elm.ports.signOut.subscribe(() => {
-    // TODO: replace with a function like `signOut` of firebase
-    setTimeout(() => {
-      localStorage.removeItem("user");
+    elm.ports.signOut.subscribe(async () => {
+      await signOut();
       elm.ports.authStateChanged.send(null);
-    }, 1000);
+    });
   });
-}, 100);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// stub function
+///////////////////////////////////////////////////////////////////////////////
+
+// TODO: replace with a callback function like `onAuthStateChanged` of firebase
+const onAuthStateChanged = (callback: (user: User | null) => void) => {
+  setTimeout(() => {
+    const user = localStorage.getItem("user");
+    callback(user ? JSON.parse(user) : null);
+  }, 100);
+};
+
+// TODO: replace with a function like `signOut` of firebase
+const signOut = async () => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  localStorage.removeItem("user");
+};
+
+// TODO: replace with a function like `signInEmailAndPassword` of firebase
+const signInEmailAndPassword = async (email: string, password: string) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  const user = { email, displayName: email, emailVerified: true };
+  localStorage.setItem("user", JSON.stringify(user));
+  return user;
+};
+
+main().catch((err) => console.error(err));

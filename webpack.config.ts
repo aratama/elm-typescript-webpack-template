@@ -2,9 +2,12 @@ import * as path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import * as webpack from "webpack";
+import * as webpackDevServer from "webpack-dev-server";
 
-export const config = {
-  mode: process.env.NODE_ENV,
+export const config = (
+  env: { [key: string]: string },
+  argv: { [key: string]: string }
+): webpack.Configuration & { devServer: webpackDevServer.Configuration } => ({
   entry: "./src/index.ts",
   output: {
     filename: "index.[chunkhash].js",
@@ -20,7 +23,7 @@ export const config = {
       patterns: [{ from: "public", to: "." }],
     }),
     new webpack.DefinePlugin({
-      MODE: JSON.stringify(process.env.NODE_ENV),
+      MODE: JSON.stringify(argv["mode"]),
     }),
   ],
 
@@ -70,6 +73,6 @@ export const config = {
     open: true,
     historyApiFallback: true, // for spa
   },
-};
+});
 
 export default config;

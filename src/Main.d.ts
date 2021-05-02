@@ -1,3 +1,5 @@
+export type User = { email: string; displayName: string; emailVerified: boolean };
+
 export namespace Elm {
   export namespace Main {
     export interface App {
@@ -13,8 +15,6 @@ export namespace Elm {
     export interface Flags {
       user: User | null;
     }
-
-    export type User = { email: string; displayName: string; emailVerified: boolean };
 
     export interface Ports {
       requestItem: Subscribe<string>;
