@@ -1,0 +1,16 @@
+.page--home {
+  background-color: #0d9e6f;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+
+  .outer {
+    flex-grow: 1;
+  }
+
+  header {
+    text-align: right;
+    padding: 1em;
+  }
+}

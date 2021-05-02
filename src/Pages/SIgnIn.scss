@@ -6,9 +6,23 @@
   align-items: center;
 
   .inner {
-    display: block;
-
     display: flex;
+    flex-direction: column;
     gap: 1em;
+  }
+
+  label {
+    span {
+      display: inline-block;
+      width: 6em;
+    }
+  }
+
+  input {
+    padding: 0.5em;
+  }
+
+  button {
+    padding: 1em;
   }
 }

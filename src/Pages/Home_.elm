@@ -1,24 +1,26 @@
 module Pages.Home_ exposing (Model, Msg, page)
 
-import Html
-import View exposing (View)
 import Browser exposing (Document, UrlRequest, application)
 import Browser.Navigation exposing (Key, load, pushUrl)
-import Html exposing (Html, button, div, text)
-import Html.Attributes exposing (class)
+import Gen.Route
+import Html exposing (Html, a, button, div, footer, header, text)
+import Html.Attributes exposing (class, href)
 import Html.Events exposing (onClick)
-import Port
-import Url exposing (Url)
 import Page
+import Port
 import Request exposing (Request)
 import Shared
+import Url exposing (Url)
+import View exposing (View)
+
 
 type alias Flags =
     Int
 
 
 type alias Model =
-    { count : Int
+    { shared : Shared.Model
+    , count : Int
     }
 
 
@@ -28,9 +30,9 @@ type Msg
     | ReceiveItem { key : String, value : Maybe String }
 
 
-init : ( Model, Cmd msg )
-init =
-    ( { count = 0 }, Port.requestItem "count" )
+init : Shared.Model -> ( Model, Cmd msg )
+init shared =
+    ( { shared = shared, count = 0 }, Port.requestItem "count" )
 
 
 upDownButton : msg -> String -> Html msg
@@ -42,12 +44,29 @@ view : Model -> Document Msg
 view model =
     { title = ""
     , body =
-        [ div [ class "outer" ]
-            [ div [class "inner"]
-                [ upDownButton Up "Up"
-                , div [class "count"  ]                   [ text <| String.fromInt model.count ]
-                , upDownButton Down "Down"
+        [ div [ class "page--home" ]
+            [ header []
+                [ case model.shared.user of
+                    Nothing ->
+                        a [ href <| Gen.Route.toHref Gen.Route.SignIn ] [ text "Sign in" ]
+
+                    Just user ->
+                        a [ href <| Gen.Route.toHref Gen.Route.Account ] [ text user.email ]
                 ]
+            , div [ class "outer" ]
+                [ div [ class "inner" ] <|
+                    case model.shared.user of
+                        Nothing ->
+                            [ div [ class "count" ] [ text <| String.fromInt model.count ]
+                            ]
+
+                        Just user ->
+                            [ upDownButton Up "Up"
+                            , div [ class "count" ] [ text <| String.fromInt model.count ]
+                            , upDownButton Down "Down"
+                            ]
+                ]
+            , footer [] [ text "\u{00A0}" ]
             ]
         ]
     }
@@ -81,12 +100,11 @@ subscriptions _ =
         ]
 
 
-
 page : Shared.Model -> Request -> Page.With Model Msg
 page shared _ =
     Page.element
-        { init = init
-        , update = update 
-        , view = view 
+        { init = init shared
+        , update = update
+        , view = view
         , subscriptions = subscriptions
         }

@@ -4,9 +4,9 @@ import Domain.User exposing (User)
 import Effect exposing (Effect)
 import Gen.Params.SignIn exposing (Params)
 import Gen.Route
-import Html exposing (div)
+import Html exposing (button, div, footer, form, header, input, label, span, text)
 import Html.Attributes as Attr exposing (class)
-import Html.Events as Events
+import Html.Events as Events exposing (onClick, onInput, onSubmit)
 import Page
 import Port
 import Request
@@ -17,7 +17,7 @@ import View exposing (View)
 page : Shared.Model -> Request.With Params -> Page.With Model Msg
 page shared req =
     Page.advanced
-        { init = init
+        { init = init shared req
         , update = update
         , view = view
         , subscriptions = subscriptions
@@ -29,14 +29,16 @@ page shared req =
 
 
 type alias Model =
-    { email : String
+    { shared : Shared.Model
+    , req : Request.With Params
+    , email : String
     , password : String
     }
 
 
-init : ( Model, Effect Msg )
-init =
-    ( { email = "", password = "" }
+init : Shared.Model -> Request.With Params -> ( Model, Effect Msg )
+init shared req =
+    ( { shared = shared, req = req, email = "", password = "" }
     , Effect.none
     )
 
@@ -47,6 +49,7 @@ init =
 
 type Msg
     = InputEmail String
+    | InputPassword String
     | SubmittedSignInForm
     | AuthStateChanged (Maybe User)
 
@@ -59,9 +62,14 @@ update msg model =
             , Effect.fromCmd Cmd.none
             )
 
+        InputPassword str ->
+            ( { model | password = str }
+            , Effect.fromCmd Cmd.none
+            )
+
         SubmittedSignInForm ->
             ( model
-            , Effect.fromShared (Shared.SignIn model)
+            , Effect.fromShared (Shared.SignIn { email = model.email, password = model.password })
             )
 
         AuthStateChanged auth ->
@@ -69,10 +77,9 @@ update msg model =
                 Nothing ->
                     ( model, Effect.none )
 
-                Just user ->
+                Just _ ->
                     ( model
-                    , Effect.none
-                      -- Effect.fromCmd <| Request.pushRoute Gen.Route.Home_ ()
+                    , Effect.fromCmd <| Request.pushRoute Gen.Route.Home_ model.req
                     )
 
 
@@ -94,19 +101,37 @@ view model =
     { title = "Sign in"
     , body =
         [ div [ class "page--sign-in" ]
-            [ Html.form [ class "inner", Events.onSubmit SubmittedSignInForm ]
-                [ Html.label []
-                    [ Html.span [] [ Html.text "email" ]
-                    , Html.input
+            [ header []
+                [ case model.shared.user of
+                    Nothing ->
+                        text "\u{00A0}"
+
+                    Just user ->
+                        text user.email
+                ]
+            , form [ class "inner", onSubmit SubmittedSignInForm ]
+                [ label []
+                    [ span [] [ text "email" ]
+                    , input
                         [ Attr.type_ "text"
                         , Attr.value model.email
-                        , Events.onInput InputEmail
+                        , onInput InputEmail
                         ]
                         []
                     ]
-                , Html.button [ Attr.disabled (String.isEmpty model.email) ]
-                    [ Html.text "Sign in" ]
+                , label []
+                    [ span [] [ text "password" ]
+                    , input
+                        [ Attr.type_ "text"
+                        , Attr.value model.password
+                        , onInput InputPassword
+                        ]
+                        []
+                    ]
+                , button [ Attr.disabled (String.isEmpty model.email) ]
+                    [ text "Sign in" ]
                 ]
+            , footer [] []
             ]
         ]
     }
