@@ -12,12 +12,18 @@ export namespace Elm {
     /* eslint @typescript-eslint/no-empty-interface: 0 */
     export interface Flags {}
 
+    export type User = { email: string; displayName: string; emailVerified: boolean };
+
     export interface Ports {
       requestItem: Subscribe<string>;
 
       receiveItem: Send<{ key: string; value: string | null }>;
 
       setItem: Subscribe<{ key: string; value: string }>;
+
+      signIn: Subscribe<{ email: string; password: string }>;
+
+      authStateChanged: Send<User | null>;
     }
 
     export interface Subscribe<T> {

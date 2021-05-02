@@ -1,0 +1,14 @@
+.page--sign-in {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .inner {
+    display: block;
+
+    display: flex;
+    gap: 1em;
+  }
+}

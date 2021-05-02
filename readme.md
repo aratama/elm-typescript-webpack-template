@@ -1,28 +1,28 @@
-# elm-typescript-webpack-template
+# my new project
+> 🌳  built with [elm-spa](https://elm-spa.dev)
 
-An opinionated Elm project template with webpack.
+## dependencies
 
-- elm
-- elm-test
-- typescript
-- jest
-- eslint
-- prettier
-- scss
-- normalize.css
-- Static Files Resource (webpack CopyPlugin)
-- File Name Hashing
-- some npm scripts (`npm run dev`, `npm run build`)
-- and webpack
+This project requires the latest LTS version of [Node.js](https://nodejs.org/)
 
-## (under consideration to use)
+```bash
+npm install -g elm elm-spa
+```
 
-- elm-spa
-- cypress
-- elm-material-components
+## running locally
 
-## (end of use)
+```bash
+elm-spa server  # starts this app at http:/localhost:1234
+```
 
-- elm-typescript-interop (unfortunately not maintained)
-- parcel@next (pre-alpha status)
-- tailwindcss
+### other commands
+
+```bash
+elm-spa add    # add a new page to the application
+elm-spa build  # production build
+elm-spa watch  # runs build as you code (without the server)
+```
+
+## learn more
+
+You can learn more at [elm-spa.dev](https://elm-spa.dev)

@@ -22,6 +22,7 @@
     "css-loader": "^5.2.4",
     "elm": "^0.19.1-5",
     "elm-analyse": "^0.16.5",
+    "elm-spa": "^6.0.0",
     "elm-test": "^0.19.1-revision6",
     "elm-webpack-loader": "^8.0.0",
     "eslint": "^7.24.0",

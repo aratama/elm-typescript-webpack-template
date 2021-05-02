@@ -26,3 +26,7 @@ elm.ports.requestItem.subscribe((key: string) => {
 elm.ports.setItem.subscribe(({ key, value }) => {
   localStorage.setItem(key, value);
 });
+
+elm.ports.signIn.subscribe(({ email, password }) => {
+  elm.ports.authStateChanged.send({ email, displayName: email, emailVerified: true });
+});
