@@ -1,6 +1,6 @@
 {
-  "name": "elm-typescript-scss-jest-eslint",
-  "version": "1.0.0",
+  "name": "elm-typescript-webpack-template",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "dev": "elm-spa build && webpack serve --mode=development",
     "lint": "elm-spa build && elm-analyse && eslint src/**/*.ts",
     "build": "elm-spa build && webpack build --mode=production",
-    "clean": "rimraf dist elm-stuff"
+    "clean": "rimraf dist elm-stuff",
+    "validate_licenses": "ts-node script/validate_licenses.ts"
   },
   "author": "cubbit",
   "license": "ISC",
@@ -28,6 +29,7 @@
     "eslint": "^7.24.0",
     "html-webpack-plugin": "^5.3.1",
     "jest": "^26.6.3",
+    "license-checker": "^25.0.1",
     "prettier": "2.2.1",
     "rimraf": "^3.0.2",
     "sass": "^1.32.11",
