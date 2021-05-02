@@ -3,7 +3,6 @@ module Pages.Account exposing (Model, Msg, page)
 import Domain.User exposing (User)
 import Effect exposing (Effect)
 import Gen.Params.Account exposing (Params)
-import Gen.Route as Route
 import Html exposing (button, div, table, td, text, tr)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)

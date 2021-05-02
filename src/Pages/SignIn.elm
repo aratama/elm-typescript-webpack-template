@@ -6,7 +6,7 @@ import Gen.Params.SignIn exposing (Params)
 import Gen.Route
 import Html exposing (a, button, div, footer, form, header, input, label, span, text)
 import Html.Attributes as Attr exposing (class, href)
-import Html.Events as Events exposing (onClick, onInput, onSubmit)
+import Html.Events exposing (onInput, onSubmit)
 import Page
 import Port
 import Request

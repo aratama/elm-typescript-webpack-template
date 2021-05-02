@@ -1,6 +1,6 @@
 import * as path from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import CopyPlugin from "copy-webpack-plugin";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import * as CopyPlugin from "copy-webpack-plugin";
 import * as webpack from "webpack";
 import * as webpackDevServer from "webpack-dev-server";
 
@@ -16,10 +16,10 @@ export const config = (
   },
 
   plugins: [
-    new HtmlWebpackPlugin({
+    new HtmlWebpackPlugin.default({
       template: path.join(__dirname, "src/index.html"),
     }),
-    new CopyPlugin({
+    new CopyPlugin.default({
       patterns: [{ from: "public", to: "." }],
     }),
     new webpack.DefinePlugin({
