@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest && elm-test",
-    "dev": "webpack serve --mode=development",
-    "lint": "elm-analyse && eslint src/**/*.ts",
-    "build": "webpack build --mode=production",
+    "test": "jest && elm-spa build && elm-test",
+    "dev": "elm-spa build && webpack serve --mode=development",
+    "lint": "elm-spa build && elm-analyse && eslint src/**/*.ts",
+    "build": "elm-spa build && webpack build --mode=production",
     "clean": "rimraf dist elm-stuff"
   },
   "author": "cubbit",
