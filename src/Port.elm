@@ -1,4 +1,4 @@
-port module Port exposing (authStateChanged, receiveItem, requestItem, setItem, signIn)
+port module Port exposing (authStateChanged, receiveItem, requestItem, setItem, signIn, signOut)
 
 import Domain.User exposing (User)
 
@@ -13,6 +13,9 @@ port setItem : { key : String, value : String } -> Cmd msg
 
 
 port signIn : { email : String, password : String } -> Cmd msg
+
+
+port signOut : () -> Cmd msg
 
 
 port authStateChanged : (Maybe User -> msg) -> Sub msg

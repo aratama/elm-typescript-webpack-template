@@ -1,7 +1,6 @@
 module Pages.Home_ exposing (Model, Msg, page)
 
-import Browser exposing (Document, UrlRequest, application)
-import Browser.Navigation exposing (Key, load, pushUrl)
+import Browser exposing (Document)
 import Gen.Route
 import Html exposing (Html, a, button, div, footer, header, text)
 import Html.Attributes exposing (class, href)
@@ -10,16 +9,11 @@ import Page
 import Port
 import Request exposing (Request)
 import Shared
-import Url exposing (Url)
-import View exposing (View)
-
-
-type alias Flags =
-    Int
 
 
 type alias Model =
     { shared : Shared.Model
+    , req : Request
     , count : Int
     }
 
@@ -30,9 +24,9 @@ type Msg
     | ReceiveItem { key : String, value : Maybe String }
 
 
-init : Shared.Model -> ( Model, Cmd msg )
-init shared =
-    ( { shared = shared, count = 0 }, Port.requestItem "count" )
+init : Shared.Model -> Request -> ( Model, Cmd msg )
+init shared req =
+    ( { shared = shared, req = req, count = 0 }, Port.requestItem "count" )
 
 
 upDownButton : msg -> String -> Html msg
@@ -60,7 +54,7 @@ view model =
                             [ div [ class "count" ] [ text <| String.fromInt model.count ]
                             ]
 
-                        Just user ->
+                        Just _ ->
                             [ upDownButton Up "Up"
                             , div [ class "count" ] [ text <| String.fromInt model.count ]
                             , upDownButton Down "Down"
@@ -101,9 +95,9 @@ subscriptions _ =
 
 
 page : Shared.Model -> Request -> Page.With Model Msg
-page shared _ =
+page shared req =
     Page.element
-        { init = init shared
+        { init = init shared req
         , update = update
         , view = view
         , subscriptions = subscriptions

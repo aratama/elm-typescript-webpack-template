@@ -1,10 +1,16 @@
 module Pages.Account exposing (Model, Msg, page)
 
+import Domain.User exposing (User)
 import Effect exposing (Effect)
 import Gen.Params.Account exposing (Params)
+import Gen.Route as Route
+import Html exposing (button, div, table, td, text, tr)
+import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import Page
+import Port
 import Request
-import Shared
+import Shared exposing (Msg(..))
 import View exposing (View)
 
 
@@ -12,7 +18,7 @@ page : Shared.Model -> Request.With Params -> Page.With Model Msg
 page shared req =
     Page.protected.advanced <|
         \user ->
-            { init = init
+            { init = init shared req user
             , update = update
             , view = view
             , subscriptions = subscriptions
@@ -24,12 +30,15 @@ page shared req =
 
 
 type alias Model =
-    {}
+    { shared : Shared.Model
+    , req : Request.With Params
+    , user : User
+    }
 
 
-init : ( Model, Effect Msg )
-init =
-    ( {}, Effect.none )
+init : Shared.Model -> Request.With Params -> User -> ( Model, Effect Msg )
+init shared req user =
+    ( { shared = shared, req = req, user = user }, Effect.none )
 
 
 
@@ -37,14 +46,14 @@ init =
 
 
 type Msg
-    = ReplaceMe
+    = SignOut
 
 
 update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
-        ReplaceMe ->
-            ( model, Effect.none )
+        SignOut ->
+            ( model, Effect.fromCmd <| Port.signOut () )
 
 
 
@@ -52,7 +61,7 @@ update msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
+subscriptions _ =
     Sub.none
 
 
@@ -62,4 +71,31 @@ subscriptions model =
 
 view : Model -> View Msg
 view model =
-    View.placeholder "Account"
+    { title = ""
+    , body =
+        [ div [ class "page--account" ]
+            [ table []
+                [ tr []
+                    [ td [] [ text "Email" ]
+                    , td [] [ text model.user.email ]
+                    ]
+                , tr []
+                    [ td [] [ text "Email Verified" ]
+                    , td []
+                        [ text <|
+                            if model.user.emailVerified then
+                                "True"
+
+                            else
+                                "False"
+                        ]
+                    ]
+                , tr []
+                    [ td [] [ text "Display Name" ]
+                    , td [] [ text model.user.displayName ]
+                    ]
+                ]
+            , button [ onClick SignOut ] [ text "Sign Out" ]
+            ]
+        ]
+    }

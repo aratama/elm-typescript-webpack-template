@@ -1,5 +1,6 @@
 @import "./Pages/Home.scss";
 @import "./Pages/SignIn.scss";
+@import "./Pages/Account.scss";
 
 body {
   margin: 0;
@@ -26,19 +27,5 @@ body {
       min-width: 4rem;
       text-align: center;
     }
-  }
-}
-
-.upDownButton {
-  background-color: #dddddd;
-  padding: 10px;
-  border-radius: 3px;
-  min-width: 160px;
-  outline: none;
-  border-style: none;
-  font-size: 2rem;
-
-  &:hover {
-    background-color: white;
   }
 }

@@ -4,8 +4,8 @@ import Domain.User exposing (User)
 import Effect exposing (Effect)
 import Gen.Params.SignIn exposing (Params)
 import Gen.Route
-import Html exposing (button, div, footer, form, header, input, label, span, text)
-import Html.Attributes as Attr exposing (class)
+import Html exposing (a, button, div, footer, form, header, input, label, span, text)
+import Html.Attributes as Attr exposing (class, href)
 import Html.Events as Events exposing (onClick, onInput, onSubmit)
 import Page
 import Port
@@ -39,7 +39,12 @@ type alias Model =
 init : Shared.Model -> Request.With Params -> ( Model, Effect Msg )
 init shared req =
     ( { shared = shared, req = req, email = "", password = "" }
-    , Effect.none
+    , case shared.user of
+        Nothing ->
+            Effect.none
+
+        Just _ ->
+            Effect.fromCmd <| Request.pushRoute Gen.Route.Home_ req
     )
 
 
@@ -130,6 +135,7 @@ view model =
                     ]
                 , button [ Attr.disabled (String.isEmpty model.email) ]
                     [ text "Sign in" ]
+                , div [] [ a [ href <| Gen.Route.toHref Gen.Route.Home_ ] [ text "Home" ] ]
                 ]
             , footer [] []
             ]

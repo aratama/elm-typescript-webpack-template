@@ -13,4 +13,18 @@
     text-align: right;
     padding: 1em;
   }
+
+  .upDownButton {
+    background-color: #dddddd;
+    padding: 10px;
+    border-radius: 3px;
+    min-width: 160px;
+    outline: none;
+    border-style: none;
+    font-size: 2rem;
+
+    &:hover {
+      background-color: white;
+    }
+  }
 }

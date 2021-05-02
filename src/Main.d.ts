@@ -10,7 +10,9 @@ export namespace Elm {
     }
 
     /* eslint @typescript-eslint/no-empty-interface: 0 */
-    export interface Flags {}
+    export interface Flags {
+      user: User | null;
+    }
 
     export type User = { email: string; displayName: string; emailVerified: boolean };
 
@@ -22,6 +24,8 @@ export namespace Elm {
       setItem: Subscribe<{ key: string; value: string }>;
 
       signIn: Subscribe<{ email: string; password: string }>;
+
+      signOut: Subscribe<void>;
 
       authStateChanged: Send<User | null>;
     }

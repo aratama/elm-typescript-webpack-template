@@ -2,27 +2,18 @@ module Shared exposing
     ( Flags
     , Model
     , Msg(..)
-    , User
     , init
     , subscriptions
     , update
     )
 
 import Domain.User exposing (User)
-import Json.Decode as Json
 import Port
 import Request exposing (Request)
 
 
-type alias User =
-    { email : String
-    , displayName : String
-    , emailVerified : Bool
-    }
-
-
 type alias Flags =
-    Json.Value
+    { user : Maybe User }
 
 
 type alias Model =
@@ -36,8 +27,8 @@ type Msg
 
 
 init : Request -> Flags -> ( Model, Cmd Msg )
-init _ _ =
-    ( { user = Nothing }, Cmd.none )
+init _ { user } =
+    ( { user = user }, Cmd.none )
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
