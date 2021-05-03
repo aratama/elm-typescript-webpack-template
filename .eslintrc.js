@@ -10,6 +10,8 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint"],
-  rules: {},
+  rules: {
+    "no-debugger": "off",
+  },
   ignorePatterns: ["src/**/*.d.ts"],
 };

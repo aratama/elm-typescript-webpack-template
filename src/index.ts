@@ -57,6 +57,7 @@ const signOut = async () => {
 };
 
 // TODO: replace with a function like `signInEmailAndPassword` of firebase
+/* eslint @typescript-eslint/no-unused-vars: "off" */
 const signInEmailAndPassword = async (email: string, password: string) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const user = { email, displayName: email, emailVerified: true };
